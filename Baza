@@ -1,0 +1,116 @@
+-- phpMyAdmin SQL Dump
+-- version 4.9.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Czas generowania: 19 Maj 2020, 17:32
+-- Wersja serwera: 10.4.8-MariaDB
+-- Wersja PHP: 7.1.33
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Baza danych: `bp`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `posiada`
+--
+
+CREATE TABLE `posiada` (
+  `id_pesel` varchar(250) COLLATE utf8_polish_ci NOT NULL,
+  `id_vin` varchar(250) COLLATE utf8_polish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `samochod`
+--
+
+CREATE TABLE `samochod` (
+  `vin` varchar(250) COLLATE utf8_polish_ci NOT NULL,
+  `marka` varchar(250) COLLATE utf8_polish_ci NOT NULL,
+  `model` varchar(250) COLLATE utf8_polish_ci NOT NULL,
+  `rok` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Zrzut danych tabeli `samochod`
+--
+
+INSERT INTO `samochod` (`vin`, `marka`, `model`, `rok`) VALUES
+('123HH1512JHGH1', 'BMW', 'i30', 2001),
+('21412551aasf', 'VW', 'golf', 12456);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `wlasciciel`
+--
+
+CREATE TABLE `wlasciciel` (
+  `pesel` varchar(250) COLLATE utf8_polish_ci NOT NULL,
+  `imie` varchar(250) COLLATE utf8_polish_ci NOT NULL,
+  `nazwisko` varchar(250) COLLATE utf8_polish_ci NOT NULL,
+  `data_ur` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Zrzut danych tabeli `wlasciciel`
+--
+
+INSERT INTO `wlasciciel` (`pesel`, `imie`, `nazwisko`, `data_ur`) VALUES
+('12312312322', 'Bartek', 'Płonka', '0000-00-00'),
+('12341234123', 'Patryk', 'Sikora', '0000-00-00'),
+('12412541255', 'patryk', 'warszawski', '0000-00-00');
+
+--
+-- Indeksy dla zrzutów tabel
+--
+
+--
+-- Indeksy dla tabeli `posiada`
+--
+ALTER TABLE `posiada`
+  ADD KEY `fk_vin` (`id_vin`),
+  ADD KEY `fk_pesel` (`id_pesel`);
+
+--
+-- Indeksy dla tabeli `samochod`
+--
+ALTER TABLE `samochod`
+  ADD PRIMARY KEY (`vin`);
+
+--
+-- Indeksy dla tabeli `wlasciciel`
+--
+ALTER TABLE `wlasciciel`
+  ADD PRIMARY KEY (`pesel`);
+
+--
+-- Ograniczenia dla zrzutów tabel
+--
+
+--
+-- Ograniczenia dla tabeli `posiada`
+--
+ALTER TABLE `posiada`
+  ADD CONSTRAINT `fk_pesel` FOREIGN KEY (`id_pesel`) REFERENCES `wlasciciel` (`pesel`),
+  ADD CONSTRAINT `fk_vin` FOREIGN KEY (`id_vin`) REFERENCES `samochod` (`vin`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
